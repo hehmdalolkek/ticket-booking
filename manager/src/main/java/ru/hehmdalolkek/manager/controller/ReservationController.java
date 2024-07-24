@@ -35,8 +35,9 @@ public class ReservationController {
             return "book";
         }
 
-        this.reservationService.bookReservation(reservation);
-        this.reservationService.sendNotification(reservation);
+        ReservationDto processedReservation = this.reservationService.processingReservation(reservation);
+        this.reservationService.bookReservation(processedReservation);
+        this.reservationService.sendNotification(processedReservation);
 
         return "success";
     }

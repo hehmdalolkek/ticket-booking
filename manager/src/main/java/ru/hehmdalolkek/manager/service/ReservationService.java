@@ -8,4 +8,6 @@ public interface ReservationService {
 
     void sendNotification(ReservationDto reservationDto);
 
+    ReservationDto processingReservation(ReservationDto reservationDto);
+
 }
