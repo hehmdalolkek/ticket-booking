@@ -61,7 +61,7 @@
         </dependency>
         <dependency>
             <groupId>ru.hehmdalolkek</groupId>
-            <artifactId>base-models</artifactId>
+            <artifactId>base-domains</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
