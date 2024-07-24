@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}">
+</head>
+<body>
+<div class="col-4 mx-auto m-5 p-5 text-center border shadow">
+    <h2 class="mb-4">To book a ticket</h2>
+    <form method="post" th:action="@{/book}" th:object="${reservation}">
+        <div th:if="${#fields.hasAnyErrors()}" class="alert alert-danger">
+            <span>The fields are filled in incorrectly.</span>
+        </div>
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label" for="date">Date</label>
+            <div class="col-sm-10">
+                <input class="form-control" type="date" th:field="*{date}" id="date" placeholder="Date">
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label" for="time">Time</label>
+            <div class="col-sm-10">
+                <input class="form-control" type="time" th:field="*{time}" id="time" placeholder="Time">
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label class="col-sm-2 col-form-label" for="email">Email</label>
+            <div class="col-sm-10">
+                <input class="form-control" type="email" th:field="*{email}" id="email" placeholder="Email">
+            </div>
+        </div>
+        <div class="mb-3">
+            <h2>Price: $299</h2>
+            <input type="hidden" value="299.0" name="price" id="price">
+        </div>
+        <input class="btn btn-primary px-5" type="submit" value="Book">
+    </form>
+</div>
+<script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.min.js}"></script>
+</body>
+</html>
