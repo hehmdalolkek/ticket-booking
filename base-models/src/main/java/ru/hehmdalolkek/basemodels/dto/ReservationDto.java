@@ -1,5 +1,8 @@
 package ru.hehmdalolkek.basemodels.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,12 +21,18 @@ public class ReservationDto implements Serializable {
 
     UUID id;
 
+    @NotNull
+    @NotBlank
+    @Email
     String email;
 
+    @NotNull
     LocalDate date;
 
+    @NotNull
     LocalTime time;
 
+    @NotNull
     double price;
 
 }
