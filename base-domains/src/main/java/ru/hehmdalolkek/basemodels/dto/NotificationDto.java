@@ -11,12 +11,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class NotificationDto {
 
-    Status status;
+    private Status status;
 
-    String message;
+    private String message;
 
-    boolean error;
+    private boolean error;
 
-    ReservationDto reservationDto;
+    private ReservationDto reservation;
 
 }

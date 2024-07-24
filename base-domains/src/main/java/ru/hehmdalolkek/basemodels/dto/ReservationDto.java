@@ -19,20 +19,20 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ReservationDto implements Serializable {
 
-    UUID id;
+    private UUID id;
 
     @NotNull
     @NotBlank
     @Email
-    String email;
+    private String email;
 
     @NotNull
-    LocalDate date;
+    private LocalDate date;
 
     @NotNull
-    LocalTime time;
+    private LocalTime time;
 
     @NotNull
-    double price;
+    private double price;
 
 }
