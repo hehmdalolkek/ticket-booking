@@ -9,11 +9,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.hehmdalolkek.basemodels.dto.ReservationDto;
+import ru.hehmdalolkek.manager.service.ReservationService;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/book")
 public class ReservationController {
+
+    private final ReservationService reservationService;
 
     @ModelAttribute("reservation")
     public ReservationDto reservation() {
@@ -31,6 +34,10 @@ public class ReservationController {
         if (bindingResult.hasErrors()) {
             return "book";
         }
+
+        this.reservationService.bookReservation(reservation);
+        this.reservationService.sendNotification(reservation);
+
         return "success";
     }
 
