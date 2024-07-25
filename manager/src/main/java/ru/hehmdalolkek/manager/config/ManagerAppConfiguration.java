@@ -10,15 +10,15 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ManagerAppConfiguration {
 
-    private final static String MANAGER_EXCHANGE_NAME = "manager.direct";
+    public final static String MANAGER_EXCHANGE_NAME = "manager.direct";
 
-    private final static String NOTIFICATION_QUEUE_NAME = "manager.notification";
+    public final static String NOTIFICATION_QUEUE_NAME = "manager.notification";
 
-    private final static String BOOKING_QUEUE_NAME = "manager.booking";
+    public final static String BOOKING_QUEUE_NAME = "manager.booking";
 
-    private final static String NOTIFICATION_ROUTING_KEY = "manager.notification";
+    public final static String NOTIFICATION_ROUTING_KEY = "manager.notification";
 
-    private final static String BOOKING_ROUTING_KEY = "manager.booking";
+    public final static String BOOKING_ROUTING_KEY = "manager.booking";
 
     @Bean
     Exchange managerExchange() {

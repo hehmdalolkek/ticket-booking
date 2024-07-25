@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import ru.hehmdalolkek.basemodels.dto.NotificationDto;
 import ru.hehmdalolkek.basemodels.dto.ReservationDto;
 import ru.hehmdalolkek.basemodels.dto.Status;
+import ru.hehmdalolkek.manager.config.ManagerAppConfiguration;
 import ru.hehmdalolkek.manager.mapper.ReservationMapper;
 import ru.hehmdalolkek.manager.model.Reservation;
 
@@ -23,7 +24,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public void bookReservation(ReservationDto reservationDto) {
-        this.rabbitTemplate.convertAndSend("manager.booking", reservationDto);
+        this.rabbitTemplate.convertAndSend(ManagerAppConfiguration.BOOKING_ROUTING_KEY, reservationDto);
         log.info("Reservation - {} sent to manager.booking queue.", reservationDto);
     }
 
@@ -35,7 +36,7 @@ public class ReservationServiceImpl implements ReservationService {
                 .message("Reservation accepted for processing.")
                 .error(false)
                 .build();
-        this.rabbitTemplate.convertAndSend("manager.notification", notificationDto);
+        this.rabbitTemplate.convertAndSend(ManagerAppConfiguration.NOTIFICATION_ROUTING_KEY, notificationDto);
         log.info("Notification - {} sent to manager.notification queue.", notificationDto);
     }
 
