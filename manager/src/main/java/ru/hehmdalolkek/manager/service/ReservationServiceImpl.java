@@ -33,10 +33,14 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public void sendNotification(ReservationDto reservationDto) {
+        String message = "Reservation accepted for processing.\n" +
+                "Date: " + reservationDto.getDate() + ".\n" +
+                "Time: " + reservationDto.getTime() + ".\n" +
+                "Price: $" + reservationDto.getPrice() + ".";
         NotificationDto notificationDto = NotificationDto.builder()
                 .reservation(reservationDto)
                 .status(Status.MANAGEMENT)
-                .message("Reservation accepted for processing.")
+                .message(message)
                 .error(false)
                 .build();
         this.rabbitTemplate.convertAndSend(
