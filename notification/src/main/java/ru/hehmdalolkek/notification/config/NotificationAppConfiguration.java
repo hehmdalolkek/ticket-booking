@@ -16,9 +16,13 @@ public class NotificationAppConfiguration {
 
     public final static String PAYMENT_EXCHANGE_NAME = "payment.direct";
 
-    public final static String NOTIFICATION_QUEUE_NAME = "manager.notification";
+    public final static String NOTIFICATION_QUEUE_NAME = "notification.queue";
 
-    public final static String NOTIFICATION_ROUTING_KEY = "manager.notification";
+    public final static String MANAGER_NOTIFICATION_ROUTING_KEY = "manager.notification";
+
+    public final static String BOOKING_NOTIFICATION_ROUTING_KEY = "booking.notification";
+
+    public final static String PAYMENT_NOTIFICATION_ROUTING_KEY = "payment.notification";
 
     @Bean
     Exchange managerExchange() {
@@ -45,7 +49,7 @@ public class NotificationAppConfiguration {
         return BindingBuilder
                 .bind(notificationQueue())
                 .to(managerExchange())
-                .with(NOTIFICATION_ROUTING_KEY)
+                .with(MANAGER_NOTIFICATION_ROUTING_KEY)
                 .noargs();
     }
 
@@ -55,7 +59,7 @@ public class NotificationAppConfiguration {
         return BindingBuilder
                 .bind(notificationQueue())
                 .to(bookingExchange())
-                .with(NOTIFICATION_ROUTING_KEY)
+                .with(BOOKING_NOTIFICATION_ROUTING_KEY)
                 .noargs();
     }
 
@@ -65,7 +69,7 @@ public class NotificationAppConfiguration {
         return BindingBuilder
                 .bind(notificationQueue())
                 .to(paymentExchange())
-                .with(NOTIFICATION_ROUTING_KEY)
+                .with(PAYMENT_NOTIFICATION_ROUTING_KEY)
                 .noargs();
     }
 

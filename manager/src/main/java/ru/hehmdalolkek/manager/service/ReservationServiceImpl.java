@@ -24,8 +24,11 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public void bookReservation(ReservationDto reservationDto) {
-        this.rabbitTemplate.convertAndSend(ManagerAppConfiguration.BOOKING_ROUTING_KEY, reservationDto);
-        log.info("Reservation - {} sent to manager.booking queue.", reservationDto);
+        this.rabbitTemplate.convertAndSend(
+                ManagerAppConfiguration.MANAGER_EXCHANGE_NAME,
+                ManagerAppConfiguration.BOOKING_ROUTING_KEY,
+                reservationDto);
+        log.info("Reservation - {} sent to {}.", reservationDto, ManagerAppConfiguration.BOOKING_QUEUE_NAME);
     }
 
     @Override
@@ -36,8 +39,11 @@ public class ReservationServiceImpl implements ReservationService {
                 .message("Reservation accepted for processing.")
                 .error(false)
                 .build();
-        this.rabbitTemplate.convertAndSend(ManagerAppConfiguration.NOTIFICATION_ROUTING_KEY, notificationDto);
-        log.info("Notification - {} sent to manager.notification queue.", notificationDto);
+        this.rabbitTemplate.convertAndSend(
+                ManagerAppConfiguration.MANAGER_EXCHANGE_NAME,
+                ManagerAppConfiguration.NOTIFICATION_ROUTING_KEY,
+                notificationDto);
+        log.info("Notification - {} sent to {}.", notificationDto, ManagerAppConfiguration.NOTIFICATION_QUEUE_NAME);
     }
 
     @Override

@@ -12,9 +12,9 @@ public class ManagerAppConfiguration {
 
     public final static String MANAGER_EXCHANGE_NAME = "manager.direct";
 
-    public final static String NOTIFICATION_QUEUE_NAME = "manager.notification";
+    public final static String NOTIFICATION_QUEUE_NAME = "notification.queue";
 
-    public final static String BOOKING_QUEUE_NAME = "manager.booking";
+    public final static String BOOKING_QUEUE_NAME = "booking.queue";
 
     public final static String NOTIFICATION_ROUTING_KEY = "manager.notification";
 
