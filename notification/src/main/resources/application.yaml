@@ -4,5 +4,11 @@ spring:
   rabbitmq:
     host: ${RABBITMQ_HOST:localhost}
     port: ${RABBITMQ_PORT:5672}
+  mail:
+    host: smtp.yandex.ru
+    port: 465
+    username: ${MAIL_USERNAME:email@email.email}
+    password: ${MAIL_PASSWORD:rvmnddjklmnnftkm}
+    protocol: smtps
 server:
   port: 8083
