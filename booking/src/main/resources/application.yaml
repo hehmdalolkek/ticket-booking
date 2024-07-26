@@ -8,3 +8,6 @@ spring:
     password: postgres
   jpa:
     generate-ddl: true
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
