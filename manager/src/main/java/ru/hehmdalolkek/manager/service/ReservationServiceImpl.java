@@ -22,13 +22,15 @@ public class ReservationServiceImpl implements ReservationService {
 
     private final ReservationMapper reservationMapper;
 
+    private final ManagerAppConfiguration config;
+
     @Override
     public void bookReservation(ReservationDto reservationDto) {
         this.rabbitTemplate.convertAndSend(
-                ManagerAppConfiguration.MANAGER_EXCHANGE_NAME,
-                ManagerAppConfiguration.BOOKING_ROUTING_KEY,
+                this.config.getManagerDirectExchangeName(),
+                this.config.getManagerBookingRoutingKeyName(),
                 reservationDto);
-        log.info("Reservation - {} sent to {}.", reservationDto, ManagerAppConfiguration.BOOKING_QUEUE_NAME);
+        log.info("Reservation - {} sent to {}.", reservationDto, this.config.getBookingQueueName());
     }
 
     @Override
@@ -44,10 +46,10 @@ public class ReservationServiceImpl implements ReservationService {
                 .error(false)
                 .build();
         this.rabbitTemplate.convertAndSend(
-                ManagerAppConfiguration.MANAGER_EXCHANGE_NAME,
-                ManagerAppConfiguration.NOTIFICATION_ROUTING_KEY,
+                this.config.getManagerDirectExchangeName(),
+                this.config.getManagerNotificationRoutingKeyName(),
                 notificationDto);
-        log.info("Notification - {} sent to {}.", notificationDto, ManagerAppConfiguration.NOTIFICATION_QUEUE_NAME);
+        log.info("Notification - {} sent to {}.", notificationDto, this.config.getNotificationQueueName());
     }
 
     @Override

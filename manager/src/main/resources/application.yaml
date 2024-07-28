@@ -6,3 +6,12 @@ spring:
     port: ${RABBITMQ_PORT:5672}
 server:
   port: 8080
+rabbitmq:
+  exchange:
+    managerDirectExchange: ${MANAGER_DIRECT_EXCHANGE:manager.direct}
+  queue:
+    bookingQueue: ${BOOKING_QUEUE:booking.queue}
+    notificationQueue: ${NOTIFICATION_QUEUE:notification.queue}
+  routingKey:
+    managerBookingRoutingKey: ${MANAGER_BOOKING_ROUTING_KEY:manager.booking}
+    managerNotificationRoutingKey: ${MANAGER_NOTIFICATION_ROUTING_KEY:manager.notification}

@@ -1,36 +1,46 @@
 package ru.hehmdalolkek.payment.config;
 
-import org.springframework.amqp.core.*;
+import lombok.Getter;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+@Getter
 @Configuration
 public class PaymentAppConfiguration {
 
-    public final static String PAYMENT_EXCHANGE_NAME = "payment.direct";
+    @Value("${rabbitmq.exchange.paymentDirectExchange}")
+    private String paymentDirectExchangeName;
 
-    public final static String PAYMENT_QUEUE_NAME = "payment.queue";
+    @Value("${rabbitmq.queue.paymentQueue}")
+    private String paymentQueueName;
 
-    public final static String NOTIFICATION_QUEUE_NAME = "notification.queue";
+    @Value("${rabbitmq.queue.notificationQueue}")
+    private String notificationQueueName;
 
-    public final static String NOTIFICATION_ROUTING_KEY = "payment.notification";
+    @Value("${rabbitmq.routingKey.paymentNotificationRoutingKey}")
+    private String paymentNotificationRoutingKeyName;
 
     @Bean
     public DirectExchange paymentExchange() {
-        return new DirectExchange(PAYMENT_EXCHANGE_NAME);
+        return new DirectExchange(this.paymentDirectExchangeName);
     }
 
     @Bean
     public Queue paymentQueue() {
-        return new Queue(PAYMENT_QUEUE_NAME);
+        return new Queue(this.paymentQueueName);
     }
 
     @Bean
     public Queue notificationQueue() {
-        return new Queue(NOTIFICATION_QUEUE_NAME);
+        return new Queue(this.notificationQueueName);
     }
 
     @Bean
@@ -38,7 +48,7 @@ public class PaymentAppConfiguration {
         return BindingBuilder
                 .bind(notificationQueue())
                 .to(paymentExchange())
-                .with(NOTIFICATION_ROUTING_KEY);
+                .with(this.paymentNotificationRoutingKeyName);
     }
 
     @Bean

@@ -28,8 +28,10 @@ public class ReservationServiceImpl implements ReservationService {
 
     private final RabbitTemplate rabbitTemplate;
 
+    private final BookingAppConfiguration config;
+
     @Transactional
-    @RabbitListener(queues = BookingAppConfiguration.BOOKING_QUEUE_NAME)
+    @RabbitListener(queues = "#{bookingAppConfiguration.getBookingQueueName()}")
     public void receiveReservation(ReservationDto reservationDto) {
         Reservation reservation = this.reservationMapper.ReservationDtoToReservation(reservationDto);
         boolean isSuccess = this.bookReservation(reservation);
@@ -71,10 +73,10 @@ public class ReservationServiceImpl implements ReservationService {
 
     public void payReservation(ReservationDto reservationDto) {
         this.rabbitTemplate.convertAndSend(
-                BookingAppConfiguration.BOOKING_EXCHANGE_NAME,
-                BookingAppConfiguration.PAYMENT_ROUTING_KEY,
+                this.config.getBookingDirectExchangeName(),
+                this.config.getBookingPaymentRoutingKey(),
                 reservationDto);
-        log.info("Reservation - {} sent to {}.", reservationDto, BookingAppConfiguration.PAYMENT_QUEUE_NAME);
+        log.info("Reservation - {} sent to {}.", reservationDto, this.config.getPaymentQueueName());
     }
 
     public void sendNotification(Reservation reservation, boolean isError, String message, Status status) {
@@ -85,10 +87,10 @@ public class ReservationServiceImpl implements ReservationService {
                 .status(status)
                 .build();
         this.rabbitTemplate.convertAndSend(
-                BookingAppConfiguration.BOOKING_EXCHANGE_NAME,
-                BookingAppConfiguration.NOTIFICATION_ROUTING_KEY,
+                this.config.getBookingDirectExchangeName(),
+                this.config.getBookingNotificationRoutingKey(),
                 notificationDto);
-        log.info("Notification - {} sent to {}.", notificationDto, BookingAppConfiguration.NOTIFICATION_QUEUE_NAME);
+        log.info("Notification - {} sent to {}.", notificationDto, this.config.getNotificationQueueName());
     }
 
 }

@@ -8,7 +8,10 @@ spring:
     host: smtp.yandex.ru
     port: 465
     username: ${MAIL_USERNAME:email@email.email}
-    password: ${MAIL_PASSWORD:rvmnddjklmnnftkm}
+    password: ${MAIL_PASSWORD:password}
     protocol: smtps
 server:
   port: 8083
+rabbitmq:
+  queue:
+    notificationQueue: ${NOTIFICATION_QUEUE:notification.queue}

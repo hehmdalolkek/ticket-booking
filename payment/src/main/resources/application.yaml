@@ -6,3 +6,11 @@ spring:
     port: ${RABBITMQ_PORT:5672}
 server:
   port: 8082
+rabbitmq:
+  exchange:
+    paymentDirectExchange: ${PAYMENT_DIRECT_EXCHANGE:payment.direct}
+  queue:
+    paymentQueue: ${PAYMENT_QUEUE:payment.queue}
+    notificationQueue: ${NOTIFICATION_QUEUE:notification.queue}
+  routingKey:
+    paymentNotificationRoutingKey: ${PAYMENT_NOTIFICATION_ROUTING_KEY:payment.notification}

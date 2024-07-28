@@ -8,7 +8,6 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import ru.hehmdalolkek.basemodels.dto.NotificationDto;
-import ru.hehmdalolkek.notification.config.NotificationAppConfiguration;
 import ru.hehmdalolkek.notification.mapper.NotificationMapper;
 import ru.hehmdalolkek.notification.model.Notification;
 
@@ -24,7 +23,7 @@ public class NotificationService {
     @Value("${spring.mail.username}")
     private String username;
 
-    @RabbitListener(queues = NotificationAppConfiguration.NOTIFICATION_QUEUE_NAME)
+    @RabbitListener(queues = "#{notificationAppConfiguration.getNotificationQueueName}")
     public void receiveNotification(NotificationDto notificationDto) {
         log.info("Received notification: {}", notificationDto);
         Notification notification = this.notificationMapper.NotificationDtoToNotification(notificationDto);

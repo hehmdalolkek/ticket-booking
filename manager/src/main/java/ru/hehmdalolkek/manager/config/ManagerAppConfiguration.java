@@ -1,38 +1,46 @@
 package ru.hehmdalolkek.manager.config;
 
+import lombok.Getter;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+@Getter
 @Configuration
 public class ManagerAppConfiguration {
 
-    public final static String MANAGER_EXCHANGE_NAME = "manager.direct";
+    @Value("${rabbitmq.exchange.managerDirectExchange}")
+    private String managerDirectExchangeName;
 
-    public final static String NOTIFICATION_QUEUE_NAME = "notification.queue";
+    @Value("${rabbitmq.queue.notificationQueue}")
+    private String notificationQueueName;
 
-    public final static String BOOKING_QUEUE_NAME = "booking.queue";
+    @Value("${rabbitmq.queue.bookingQueue}")
+    private String bookingQueueName;
 
-    public final static String NOTIFICATION_ROUTING_KEY = "manager.notification";
+    @Value("${rabbitmq.routingKey.managerNotificationRoutingKey}")
+    private String managerNotificationRoutingKeyName;
 
-    public final static String BOOKING_ROUTING_KEY = "manager.booking";
+    @Value("${rabbitmq.routingKey.managerBookingRoutingKey}")
+    private String managerBookingRoutingKeyName;
 
     @Bean
     Exchange managerExchange() {
-        return new DirectExchange(MANAGER_EXCHANGE_NAME);
+        return new DirectExchange(this.managerDirectExchangeName);
     }
 
     @Bean
     Queue notificationQueue() {
-        return new Queue(NOTIFICATION_QUEUE_NAME);
+        return new Queue(this.notificationQueueName);
     }
 
     @Bean
     Queue bookingQueue() {
-        return new Queue(BOOKING_QUEUE_NAME);
+        return new Queue(this.bookingQueueName);
     }
 
     @Bean
@@ -40,7 +48,7 @@ public class ManagerAppConfiguration {
         return BindingBuilder
                 .bind(notificationQueue())
                 .to(managerExchange())
-                .with(NOTIFICATION_ROUTING_KEY)
+                .with(this.managerNotificationRoutingKeyName)
                 .noargs();
     }
 
@@ -49,7 +57,7 @@ public class ManagerAppConfiguration {
         return BindingBuilder
                 .bind(bookingQueue())
                 .to(managerExchange())
-                .with(BOOKING_ROUTING_KEY)
+                .with(this.managerBookingRoutingKeyName)
                 .noargs();
     }
 

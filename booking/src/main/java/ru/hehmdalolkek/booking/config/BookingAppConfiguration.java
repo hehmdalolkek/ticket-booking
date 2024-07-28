@@ -1,5 +1,7 @@
 package ru.hehmdalolkek.booking.config;
 
+import jakarta.persistence.EntityManagerFactory;
+import lombok.Getter;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
@@ -7,6 +9,7 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -14,52 +17,58 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import jakarta.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
+@Getter
 @Configuration
 public class BookingAppConfiguration {
 
-    public final static String BOOKING_EXCHANGE_NAME = "booking.direct";
+    @Value("${rabbitmq.exchange.bookingDirectExchange}")
+    private String bookingDirectExchangeName;
 
-    public final static String BOOKING_QUEUE_NAME = "booking.queue";
+    @Value("${rabbitmq.queue.bookingQueue}")
+    private String bookingQueueName;
 
-    public final static String NOTIFICATION_QUEUE_NAME = "notification.queue";
+    @Value("${rabbitmq.queue.notificationQueue}")
+    private String notificationQueueName;
 
-    public final static String PAYMENT_QUEUE_NAME = "payment.queue";
+    @Value("${rabbitmq.queue.paymentQueue}")
+    private String paymentQueueName;
 
-    public final static String NOTIFICATION_ROUTING_KEY = "booking.notification";
+    @Value("${rabbitmq.routingKey.bookingNotificationRoutingKey}")
+    private String bookingNotificationRoutingKey;
 
-    public final static String PAYMENT_ROUTING_KEY = "booking.payment";
+    @Value("${rabbitmq.routingKey.bookingPaymentRoutingKey}")
+    private String bookingPaymentRoutingKey;
 
     @Bean
     public DirectExchange bookingExchange() {
-        return new DirectExchange(BOOKING_EXCHANGE_NAME);
+        return new DirectExchange(this.bookingDirectExchangeName);
     }
 
     @Bean
     public Queue bookingQueue() {
-        return new Queue(BOOKING_QUEUE_NAME);
+        return new Queue(this.bookingQueueName);
     }
 
     @Bean
     public Queue notificationQueue() {
-        return new Queue(NOTIFICATION_QUEUE_NAME);
+        return new Queue(this.notificationQueueName);
     }
 
     @Bean
     public Queue paymentQueue() {
-        return new Queue(PAYMENT_QUEUE_NAME);
+        return new Queue(this.paymentQueueName);
     }
 
     @Bean
     public Binding notificationBookingBinding() {
-        return BindingBuilder.bind(notificationQueue()).to(bookingExchange()).with(NOTIFICATION_ROUTING_KEY);
+        return BindingBuilder.bind(notificationQueue()).to(bookingExchange()).with(this.bookingNotificationRoutingKey);
     }
 
     @Bean
     public Binding paymentBookingBinding() {
-        return BindingBuilder.bind(paymentQueue()).to(bookingExchange()).with(PAYMENT_ROUTING_KEY);
+        return BindingBuilder.bind(paymentQueue()).to(bookingExchange()).with(this.bookingPaymentRoutingKey);
     }
 
     @Bean

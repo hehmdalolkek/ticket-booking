@@ -23,7 +23,9 @@ public class ReservationService {
 
     private final ReservationMapper reservationMapper;
 
-    @RabbitListener(queues = PaymentAppConfiguration.PAYMENT_QUEUE_NAME)
+    private final PaymentAppConfiguration config;
+
+    @RabbitListener(queues = "#{paymentAppConfiguration.getPaymentQueueName()}")
     private void payReservation(ReservationDto reservationDto) {
         Reservation reservation = this.reservationMapper.ReservationDtoToReservation(reservationDto);
         boolean isSuccess = this.proceedPay(reservation);
@@ -60,10 +62,10 @@ public class ReservationService {
                 .status(status)
                 .build();
         this.rabbitTemplate.convertAndSend(
-                PaymentAppConfiguration.PAYMENT_EXCHANGE_NAME,
-                PaymentAppConfiguration.NOTIFICATION_ROUTING_KEY,
+                this.config.getPaymentDirectExchangeName(),
+                this.config.getPaymentNotificationRoutingKeyName(),
                 notificationDto);
-        log.info("Notification - {} sent to {}.", notificationDto, PaymentAppConfiguration.NOTIFICATION_QUEUE_NAME);
+        log.info("Notification - {} sent to {}.", notificationDto, this.config.getNotificationQueueName());
     }
 
     public boolean proceedPay(Reservation reservation) {
