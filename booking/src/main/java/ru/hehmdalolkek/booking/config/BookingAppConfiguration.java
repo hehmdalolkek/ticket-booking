@@ -28,8 +28,6 @@ public class BookingAppConfiguration {
 
     public final static String PAYMENT_QUEUE_NAME = "payment.queue";
 
-    public final static String BOOKING_ROUTING_KEY = "manager.booking";
-
     public final static String NOTIFICATION_ROUTING_KEY = "booking.notification";
 
     public final static String PAYMENT_ROUTING_KEY = "booking.payment";
@@ -52,11 +50,6 @@ public class BookingAppConfiguration {
     @Bean
     public Queue paymentQueue() {
         return new Queue(PAYMENT_QUEUE_NAME);
-    }
-
-    @Bean
-    public Binding bookingBookingBinding() {
-        return BindingBuilder.bind(bookingQueue()).to(bookingExchange()).with(BOOKING_ROUTING_KEY);
     }
 
     @Bean
